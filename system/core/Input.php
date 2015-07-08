@@ -608,6 +608,15 @@ class CI_Input {
 			}
 		}
 
+		// Check if it's a JSON encoded post and get the JSON input into the $_POST araay
+		if ($_SERVER['REQUEST_METHOD']=='POST' && $_SERVER['CONTENT_TYPE']=='application/json;charset=UTF-8') {
+			try {
+				$_POST = json_decode(file_get_contents('php://input'),true);
+			} catch (Exception $e) {
+				log_message('error', $e->getMessage());
+			}
+		}
+		
 		// Clean $_POST Data
 		if (is_array($_POST) && count($_POST) > 0)
 		{
